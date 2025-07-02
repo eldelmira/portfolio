@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #d4ebf2;
+    font-family: Arial, sans-serif;
+  }
+  
+  main.tictactoe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(3, 120px);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .case {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    background-color: #88a885;
+    color: #fff;
+    border: 2px solid #333;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .case:hover {
+    background-color: #a2c3a1;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    border: none;
+    background-color: #333;
+    color: white;
+    margin-top: 10px;
+    text-align: center;
+    transition: background-color 0.2s;
+  }
+  
+  .btn:hover {
+    background-color: #555;
+  }
+  
+  a.back {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    background-color: #0077cc;
+    margin-top: 20px;
+  }
+  
+  a.back:hover {
+    background-color: #005fa3;
+  }
+  
+  @media screen and (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(3, 80px);
+      grid-template-rows: repeat(3, 80px);
+    }
+  
+    .case {
+      font-size: 1.5em;
+    }
+  
+    .btn {
+      font-size: 1em;
+    }
+  }
+  

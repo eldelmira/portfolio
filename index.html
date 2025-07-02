@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mystyle3.css">
+    <title>Porfolio</title>
+    
+</head>
+<body>
+    <div class="titre">
+      <div class="logo-titre">
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>Bienvenue à mon Portfolio</h1>
+      </div>
+      <hr>
+      <br>
+    </div>
+  
+  
+    
+    <br>
+<nav>
+            <div class="menu-toggle">Menu</div>
+        <ul>
+            <li class="html"><a href="#">HTML & CSS</a>
+            <ul class="sousmenu" style="background-color: rgba(180, 146, 255); ">
+                <li><a href="TP1/index.html">TP1</a></li>
+                <li><a href="TP2/index.html">TP2</a></li>
+                <li><a href="TP3/index.html">TP3</a></li>
+                <li><a href="TP4/index.html">TP4</a></li>
+
+
+            </ul>
+            </li>
+    
+       
+        
+            <li class="javascript"><a href="#">Javascript</a>
+            <ul class="sousmenu" style="background-color: rgba(108, 191, 132); ">
+                <li><a href="TP_JS1/index.html">TP1</a></li>
+                <li><a href="TP_JS2/index.html">TP2</a></li>
+                <li><a href="TP JS3/index.html">TP3</a></li>
+                <li><a href="TP_JS4/index.html">TP4</a></li>
+            
+            </ul>
+            </li>
+        
+        
+
+        
+        
+        
+            <li class="bdd"><a href="#">Epreuve 5</a>
+            <ul class="sousmenu" style="background-color: rgba(0, 165, 198); ">
+                <li><a href="VEILLE TECHNOLOGIE/index.html">VEILLE</a></li>
+                <li><a href="#">STAGE</a></li>
+            
+        </ul>
+        </li>
+       
+        
+    
+            <li class="php"><a href="#">Réseaux</a>
+            <ul class="sousmenu" style="background-color: rgba(209, 158, 203); ">
+                <li><a href="packet tracer/index.html">Cisco</a></li>
+                <li><a href="#">TP2</a></li>
+            
+            </ul>
+        </li>
+        
+
+        
+
+            <li class="mission"><a href="#">Missions</a>
+            <ul class="sousmenu" style=" background-color: rgba(244, 179, 147);">
+                <li><a href="PPEs/Mission 1/index.html">Mission1</a></li>
+                <li><a href="PPEs/Mission 2/index.html">Mission2</a></li>
+                <li><a href="PPEs/Mission 3/index.html">Mission3</a></li>
+                <li><a href="PPEs/Mission 4/index.html">Mission4</a></li>
+                <li><a href="PPEs/Mission 5/index.html">Mission6</a></li>
+                <li><a href="PPEs/Mission 8/index.html">Mission8</a></li>
+                <li><a href="PPEs/Mission 9/index.html">Mission9</a></li>
+                <li><a href="PPEs/Mission 10/index.html">Mission10</a></li>
+            
+                </a></li>
+            <br>
+        </ul>
+        </li>
+        
+
+        
+
+        
+            <li class="certification"><a href="#">Certification</a>
+            <ul class="sousmenu" style=" background-color: rgba(74, 111, 165);">
+                <li><a href="Certificat_.pdf">Certification1</a></li>
+                <li><a href="Attestation_de_suivi.pdf">Certification2</a></li>
+                <li><a href="Certificat1_.pdf">Certification3</a></li>
+                <li><a href="Certificat2_.pdf">Certification4</a></li>
+                <li><a href="Certificat3_.pdf">Certification5</a></li>
+                <li><a href="Certificat12.pdf">Certification6</a></li>
+            
+        </ul>
+        
+    </li>
+    
+    
+            <li class="projects"><a href="#">Autres projets</a>
+            <ul class="sousmenu" style="background-color: rgba(182, 110, 110);">
+                <li><a href="Autres Projets/Projet 1/cv.html">TP1</a></li>
+                <li><a href="Autres Projets/Projet 2/index.html">TP2</a></li>
+                <li><a href="Autres Projets/Projet 3/index.html">TP3</a></li>
+                <li><a href="Autres Projets/Projet 4/index.html">TP4</a></li>
+                <li><a href="Autres Projets/Projet 5/index.html">TP5</a></li>
+                <li><a href="Autres Projets/Projet 6/index.html">TP6</a></li>
+                
+            <br>
+            </ul>
+        </li>
+
+        
+</nav>
+
+<div>
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navUl = document.querySelector('nav > ul');
+
+    menuToggle.addEventListener('click', () => {
+        navUl.classList.toggle('open');
+    });
+
+    // Gestion sous-menus au clic sur mobile
+    const menuItems = document.querySelectorAll('nav > ul > li');
+
+    menuItems.forEach(item => {
+        const submenu = item.querySelector('.sousmenu');
+        if (submenu) {
+            // On intercepte le clic sur le lien parent uniquement pour mobiles
+            item.querySelector('a').addEventListener('click', e => {
+                if (window.innerWidth <= 680) {
+                    e.preventDefault(); // Empêche le lien de naviguer
+                    submenu.classList.toggle('open');
+                }
+            });
+        }
+    });
+});
+</script>
+
+
+<footer>© 2024 Eldelmira SMART Porfolio</footer>
+</body>
+</html>

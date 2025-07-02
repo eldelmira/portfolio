@@ -1,0 +1,100 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f5;
+}
+
+.facture-container {
+  width: 800px;
+  margin: 20px auto;
+  background: #e0f7f8;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #0078D7;
+}
+
+.company-info h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #005A6E;
+}
+
+.facture-info h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #FF4A4A;
+}
+
+.client-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.client-info h3 {
+  font-size: 1.2rem;
+  color: #005A6E;
+  margin-bottom: 10px;
+}
+
+.table-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background: #0078D7;
+  color: white;
+}
+
+.totals {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #0078D7;
+}
+
+.totals p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.totals .solde-final {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #FF4A4A;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  background: #0078D7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #005A6E;
+}

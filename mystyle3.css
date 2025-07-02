@@ -1,0 +1,545 @@
+nav > ul > li{
+    float:left;
+    position:relative;
+    
+   
+    
+}
+
+.titre{
+
+    
+    background: linear-gradient(to right, #134e4a, #0f766e);
+
+
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      
+      
+}
+
+.logo-titre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .logo {
+    width: 60px; /* ajuste selon ton logo */
+    height: auto;
+    border-radius: 5px;
+  }
+  
+
+nav > ul > li:hover a{
+    padding: 15px 30px 20px 30px;
+    
+ 
+}
+
+
+nav .sousmenu {
+    display: none; /* Masquer le sous-menu par défaut */
+    position:absolute;
+    left: 5px;
+    top: 100%;
+    margin: auto;
+    cursor: pointer;
+    
+  
+    
+ }
+
+
+body{
+    background-image: url('image1.gif');
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: inherit;
+    color: inherit;
+    font: inherit;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    width: 100%;
+    
+
+}
+  
+  
+
+a, ul{
+    
+    list-style: none;
+    text-decoration: none;
+    padding: auto;
+    padding-left: 50px;
+    padding-top: 10px;
+    font-size: 11px;
+    color: white;
+    height: 60px;
+    border-top-left-radius: 10px;
+    margin: 20px;
+    padding-top: 16px;
+    
+    
+    
+    
+}
+
+li{
+    padding-bottom: 7px;
+    
+    
+    
+   
+}
+
+footer {
+   
+
+ display: flex;
+    justify-content: center;
+    padding: 5px;
+    background-color:#2c3e50;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+}
+
+
+nav > ul{
+    display: inline-block;
+    box-shadow: 0 0 14px rgb(10, 10, 10);
+    background-color: rgb(24, 9, 9);
+    width: 95%;
+    border-radius: 20px;
+    top: 75px;
+    position: fixed;
+    
+     
+    
+}
+
+
+li a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 12px;
+    background: grey;
+    left: 0;
+    bottom: -4px;
+    transition: 0.3s;
+  }
+  
+  li a:hover::after {
+    width: 100%;
+  }
+
+
+nav > ul::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.sousmenu{
+    display: none;
+    position: absolute; 
+    z-index: 10px;
+    padding-bottom: 10px;
+    border-spacing: 1em;
+    box-shadow:0 0 15px rgb(5, 4, 4);
+    height: fit-content;
+    background-color: #45a1ff;
+
+    
+   
+    
+    
+    
+    
+    
+}
+
+
+.sousmenu li:hover a{
+    color: #EEE;
+    font-weight: bold;
+    border:  1px solid lightslategray;
+    border-radius: 10px;
+    margin-bottom: 12px;
+   
+   
+    
+     
+    
+}
+
+.nav .sousmenu li:hover{
+    display: block;
+    background-color: RGB(210,77,60);
+    width: 100px;
+    height: 60px;
+    
+   
+}
+
+
+nav li:hover .sousmenu{
+    display:list-item;
+    border: 1px solid rgb(34, 163, 77);
+    padding-top: 3px;
+    width: 150px;
+    padding-right: 100px;
+    padding-left: 20px;
+    
+    
+    
+}
+
+
+.none{
+    display: none;
+}
+
+
+nav {
+    
+    /*background-color: blue; */
+    /*background: #2A7B9B;*/
+    
+    height:130px;
+    
+    
+     
+}
+
+
+.background{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+
+nav .sousmenu li {
+    text-align: center;
+    background-color: #2e4053 ;
+    width: 200px;
+    padding: 12px;
+    border-style: ridge;
+    border-radius: 10px;
+    top: 20px;
+
+    
+}
+ 
+
+ nav  .sousmenu li:hover{
+opacity: 0.8;
+width: 210;
+ }
+ /*
+nav input[type=checkbox]:checked ~ ul{
+    display: block;
+}
+    */
+
+@media screen and (max-width: 680px){
+    .none{
+        flex-direction: column; 
+        display: block;
+        color: #fff;
+        background-color: rgba(29, 197, 151,0.97);
+        text-align: center;
+        padding: 12px 0;
+        padding-bottom: 30px;
+        
+       
+       
+    }
+
+    .sousmenu{
+        display: none;
+        
+        
+            
+    }
+
+
+
+    .sousmenu:hover{
+        display:flex;
+    }
+
+    nav > ul{
+        display: none;
+        height: fit-content;
+    }
+
+    nav > ul > li {
+        width: 100%; 
+        padding-bottom: 20px;
+        
+        
+       
+    }
+    nav{
+        background-color: #134e4a;
+        font-size: 20px;
+        height: 60px;
+    }
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        line-height: inherit;
+        color: inherit;
+        font: inherit;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-image: url('image1.gif');
+        background-size: cover;        
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh; 
+        font-size: 15px;
+        
+        
+        
+        
+    }
+    
+    a, ul{
+        list-style: none;
+        text-decoration: none;
+        font-size: 14px;
+        color: white;
+        text-align: center;
+        
+        
+        
+
+        
+    }
+
+    nav .sousmenu {
+        display: none; 
+        position:relative;
+        left: 10px;
+        top: 100%;
+        margin: auto;
+        cursor: pointer;
+        border-bottom: 3px solid red;
+        
+        
+
+    
+}
+
+
+nav .sousmenu li {
+    text-align: left;
+    background-color: #2e4053 ;
+    width: 150px;
+    padding: 12px;
+    border-style: ridge;
+    border-radius: 10px;
+    top: 20px;
+    font-size: 15px;
+    font-weight: bolder;
+    
+    
+
+    
+}
+ 
+
+ nav  .sousmenu li:hover{
+  opacity: 0.8;
+
+ }
+
+
+ nav li:hover .sousmenu{
+    display:list-item;
+    border: 1px solid rgb(34, 163, 77);
+    padding-top: 3px;
+    width: 219px;
+    padding-right: 100px;
+    padding-left: 20px;
+    text-align: center;
+    font: size 0.5px;
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+/* Bouton menu toggle pour mobile */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    color: white;
+    background-color: #134e4a;
+    padding: 10px 20px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 10px;
+    user-select: none;
+    margin: 10px auto;
+    width: fit-content;
+}
+
+/* Menu ul normal desktop */
+nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Sous-menu caché par défaut */
+nav .sousmenu {
+    display: none;
+    position: absolute;
+    background-color: #45a1ff;
+    border-radius: 10px;
+    padding: 10px 0;
+    box-shadow: 0 0 15px rgb(5,4,4);
+    z-index: 100;
+}
+}
+
+/* Afficher sous-menu au hover sur desktop */
+@media (hover: hover) and (pointer: fine) {
+    nav > ul > li:hover > .sousmenu {
+        display: block;
+    }
+}
+
+/* Responsive mobile */
+@media screen and (max-width: 680px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    nav > ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgba(24, 9, 9, 0.9);
+        border-radius: 0 0 20px 20px;
+      
+        position: static;
+    }
+
+     a, ul{
+        list-style: none;
+        text-decoration: none;
+        font-size: 14px;
+        color: rgb(255, 255, 255);
+        text-align: left;
+        text-align: center;
+        font-size:small;
+        
+
+        
+    }
+
+
+    /* Afficher menu quand toggle actif */
+    nav > ul.open {
+        display: flex;
+    }
+
+    nav > ul > li {
+        width: 100%;
+        padding: 12px 20px;
+        position: relative;
+    }
+
+    /* Sous-menu mobile en colonne et visible si ouvert */
+    nav .sousmenu {
+        position: static;
+        box-shadow: none;
+        background-color: #2e4053;
+        border-radius: 0;
+        padding-left: 20px;
+        display: none; /* caché par défaut */
+    }
+
+    nav .sousmenu.open {
+        display: block;
+    }
+}
+
+
+
+
+
+
+nav .html:hover{
+    border-top: 5px solid rgba(180, 146, 255) ;
+    background-color: RGBa(228, 77, 38,0.15);
+    
+    
+    
+    
+    
+    
+}
+
+nav .javascript:hover {
+    border-top: 5px solid #6cbf84; /* Vert doux menthe */
+    background-color: rgba(108, 191, 132, 0.15);
+    opacity: 0.9;
+}
+
+nav .bdd:hover {
+    border-top: 5px solid #00a5c6; /* Bleu-vert doux */
+    background-color: rgba(0, 165, 198, 0.15);
+    opacity: 0.9;
+}
+
+nav .php:hover {
+    border-top: 5px solid #d19ecb; /* Mauve clair pastel */
+    background-color: rgba(209, 158, 203, 0.15);
+    opacity: 0.9;
+}
+
+nav .mission:hover {
+    border-top: 5px solid #f4b393; /* Orange saumoné doux */
+    background-color: rgba(244, 179, 147, 0.15);
+    opacity: 0.9;
+}
+
+nav .certification:hover {
+    border-top: 5px solid #4a6fa5; /* Bleu acier doux */
+    background-color: rgba(74, 111, 165, 0.15);
+    opacity: 0.9;
+}
+
+nav .projects:hover {
+    border-top: 5px solid #b66e6e; /* Rouge brique clair */
+    background-color: rgba(182, 110, 110, 0.15);
+    opacity: 0.9;
+}
+

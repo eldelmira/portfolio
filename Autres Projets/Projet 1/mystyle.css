@@ -1,0 +1,141 @@
+/* Styles de base (bureau) */
+header {
+    background-color: black;
+}
+
+body {
+    background-color: teal;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    background-color: black;
+    text-align: left;
+    padding: 10px;
+    color: white;
+}
+
+h1, p, h3 {
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+}
+
+.cv {
+    margin: auto;
+    width: 80%;
+    background-color: #B59AF5;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 20px black;
+}
+
+.nom {
+    width: auto;
+}
+
+.langue {
+    text-align: center;
+}
+
+.info {
+    width: 500px;
+    max-width: 100%;
+    padding-left: 20px;
+    text-align: left;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+.image {
+    float: right;
+    margin-right: 20px;
+    margin-top: 30px;
+    border-radius: 5px;
+    border-style: ridge;
+    max-width: 50%;
+    height: auto;
+}
+
+h2, h3 {
+    background-color: darkcyan;
+    border-radius: 30px;
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.body2 {
+    background-image: url(image2.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.lien {
+    text-align: center;
+    margin: 20px 0;
+}
+
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid;
+    font-size: 18px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    margin: 5px;
+}
+
+/* Media queries pour tablettes */
+@media (max-width: 1024px) {
+    .cv {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .image {
+        float: none;
+        display: block;
+        margin: 20px auto;
+    }
+
+    .info {
+        width: 90%;
+        padding: 10px;
+    }
+}
+
+/* Media queries pour téléphones */
+@media (max-width: 600px) {
+    h1, p, h2, h3 {
+        font-size: 16px;
+    }
+
+    a {
+        font-size: 16px;
+        padding: 8px 15px;
+    }
+
+    .cv {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .image {
+        float: none;
+        margin: 10px auto;
+        width: 100%;
+    }
+
+    .info {
+        width: 95%;
+        padding: 10px;
+        text-align: center;
+    }
+}
