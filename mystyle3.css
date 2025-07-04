@@ -1,6 +1,7 @@
 nav > ul > li{
     float:left;
     position:relative;
+    padding-top: 11px;
     
    
     
@@ -52,6 +53,7 @@ nav .sousmenu {
     margin: auto;
     cursor: pointer;
     
+    
   
     
  }
@@ -87,6 +89,7 @@ a, ul{
     border-top-left-radius: 10px;
     margin: 20px;
     padding-top: 16px;
+    font-size: 15px;
     
     
     
@@ -162,6 +165,8 @@ nav > ul::after {
     box-shadow:0 0 15px rgb(5, 4, 4);
     height: fit-content;
     background-color: #45a1ff;
+    margin-top: 50px;
+    margin-bottom: 60px;
 
     
    
