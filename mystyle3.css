@@ -67,9 +67,10 @@ body{
     line-height: inherit;
     color: inherit;
     font: inherit;
-   font-family:serif;
+    font-family:serif;
     font-weight: bold;
     width: 100%;
+    
     
 
 }
@@ -83,13 +84,13 @@ a, ul{
     padding: auto;
     padding-left: 50px;
     padding-top: 10px;
-    font-size: 17px;
+    font-size: 30px;
     color: white;
     height: 60px;
     border-top-left-radius: 10px;
     margin: 20px;
     padding-top: 16px;
-    font-size: 15px;
+    font-size: 20px;
     
     
     
