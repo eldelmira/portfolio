@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <title>Projet Réseau - Louvre</title>
   <style>
     body {
@@ -41,31 +42,49 @@
       bottom: 0;
       width: 100%;
     }
-    .button {
-      background-color: #0066cc;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    .button:hover {
-      background-color: #004999;
-    }
+    button {
+    width: 95%;
+    height: 80px;
+    margin: 10px;
+    font-size: 1.2em;
+    background-color: #1e1e2f;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  button:hover {
+    background-color: #ffffff;
+    color: #1e1e2f;
+    border: 2px solid #1e1e2f;
+    transform: scale(1.05);
+  }
   </style>
 </head>
 <body>
   <header>
     <h1>Simulation Réseau du Louvre</h1>
   </header>
-
+  <button><a href="/portfolio/index.html"></a>Retour</button>
   <div class="container">
     <h2>Objectif du projet</h2>
     <p>Dans le cadre de mon apprentissage des réseaux, j'ai réalisé une simulation complète de l'infrastructure réseau d'un musée type "Louvre" à l'aide de Cisco Packet Tracer. L'objectif était de concevoir une architecture réaliste, sécurisée et segmentée.</p>
 
+<video controls width="100%" height="360">
+  <source src="Intercisco.mp4" type="video/mp4">
+  
+  Votre navigateur ne supporte pas la lecture vidéo. 
+  <a href="Intercisco.mp4">Téléchargez le fichier</a>.
+</video>
+
     <h2>Topologie réseau</h2>
     <img src="Capture%20d%27%C3%A9cran%202025-06-05%20083755.png" alt="Topologie Réseau du Louvre">
+    <button><a href="interfacecisco.pkt">Packet tracer scketch</a></button>
+
+  
 
     <h2>Architecture technique</h2>
     <ul>

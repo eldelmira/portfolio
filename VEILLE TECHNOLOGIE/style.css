@@ -1,0 +1,14 @@
+h1{
+    text-align: center;
+    color: white;
+}
+
+a{
+    text-decoration: none;
+}
+
+div{
+    background: linear-gradient(to right, #134e4a, #0f766e);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}

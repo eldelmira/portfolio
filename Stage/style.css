@@ -1,0 +1,45 @@
+h1{
+    text-align: center;
+    color: white;
+}
+
+div{
+     background: linear-gradient(to right, #134e4a, #0f766e);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+body{
+    background-image: url("stage.jpg");
+    height: fit-content;
+    
+}
+
+.img{
+    height: 600px;
+    width: 900px;
+    margin-left: 20%;
+    margin-right: 90%;
+}
+
+button {
+    width: 120px;
+    height: 60px;
+    margin: 10px;
+    font-size: 1.2em;
+    background-color: #1e1e2f;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-weight: bolder;
+  }
+  
+  button:hover {
+    background-color: #ffffff;
+    color: #1e1e2f;
+    border: 2px solid #1e1e2f;
+    transform: scale(1.05);
+  }
