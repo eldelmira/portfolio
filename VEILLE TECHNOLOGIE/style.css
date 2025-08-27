@@ -12,3 +12,16 @@ div{
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 1em;
+    color: #0077cc;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
+  }
