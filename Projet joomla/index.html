@@ -135,14 +135,8 @@
           <span class="tag">Joomla (CMS)</span>
           <span class="tag">HTTPS / TLS</span>
           <span class="tag">UFW + Fail2ban</span>
-          <span class="tag"><a href="Recette de déploiement.txt">Recette</a></span>
-          <span class="tag">
-  
-</span>
-
+          <span class="tag"><a href="Recette de déploiement.txt"></a>Recette de déploiement.txt</span>
           <span class="tag"><a href="/portfolio/index.html">Retour</a></span>
-          
-
         </div>
       </div>
 
@@ -232,3 +226,63 @@
           </div>
 
           <h3>Notes sécurité</h3>
+          <ul>
+            <li><strong>UFW</strong> : politique par défaut <em>deny</em>, règles précises sur les ports autorisés</li>
+            <li><strong>SSH</strong> : port personnalisé (<strong>19550</strong>), clés SSH, mot de passe désactivé</li>
+            <li><strong>Apache</strong> : redirection HTTPS, en-têtes de sécurité, modules non utilisés désactivés</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Ouverture des ports</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Port/Proto</th>
+                  <th>Service</th>
+                  <th>Rôle</th>
+                  <th>Exposition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>80/TCP</td><td>HTTP (Apache)</td><td>Accès initial + redirection</td><td>Entrant autorisé</td></tr>
+                <tr><td>443/TCP</td><td>HTTPS (Apache)</td><td>Accès chiffré au site</td><td>Entrant autorisé</td></tr>
+                <tr><td>3306/TCP</td><td>MariaDB</td><td>Base de données</td><td>Restreint (LAN/localhost)</td></tr>
+                <tr><td>19550/TCP</td><td>SSH</td><td>Administration distante</td><td>Restreint (IP autorisées)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Adressage & DHCP</h3>
+          <ul>
+            <li>Serveur (statique) : <strong>192.168.26.1</strong></li>
+            <li>Plage DHCP : capacité jusqu’à <strong>255</strong> hôtes</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <article class="card">
+          <h2>Résultat</h2>
+          <p>
+            Le site Joomla est <strong>opérationnel</strong> et accessible en <strong>HTTPS</strong>.  
+            L’architecture répond aux <strong>contraintes de sécurité</strong> et au cahier des charges : protocoles et ports conformes, IP statique, réseau dimensionné pour 255 postes, durcissement des services et protection active (Fail2ban).
+          </p>
+
+          <!-- (Optionnel) vidéo de démo ou autre visuel -->
+          
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2024 Eldelmira SMART — Portfolio</p>
+    </div>
+  </footer>
+</body>
+</html>
