@@ -1,0 +1,365 @@
+			Recette de déploiement joomla 
+ELDELMIRA SMART BTS SIO A
+# Mon ip add 192.168.237.156
+# Changement ip (ip static) --> 192.168.26.1 
+
+Pour ouvrir le site:
+	-Aller sur le navigateur de votre choix
+	- Taper dans la barre de recherche https://joomla.local ou https://192.168.26.1
+
+Pour pouvoir accèder au site faite:
+
+sudo systemctl restart apache2 
+
+Mot de passe de debian : debian
+
+Mot de passe de SSL/TLS : debian123
+
+Mot de passe d'administrator : Debian123456
+
+Mettre à jour le système
+
+sudo apt update && sudo apt upgrade -y
+
+3. Installation des services requis
+Installation d'Apache
+
+sudo apt install apache2 -y
+
+    Démarrer et activer Apache :
+
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+    Vérifier le statut :
+
+sudo systemctl status apache2
+
+Installation de MariaDB
+
+sudo apt install mariadb-server -y
+
+    Sécuriser MariaDB :
+
+sudo mysql_secure_installation
+
+Réponds aux questions :
+    Modifier le mode de passe de root: Non
+
+    Définir un mot de passe root : Oui
+
+    Supprimer les utilisateurs anonymes : Oui
+
+    Désactiver l’accès root distant : Oui
+
+    Supprimer la base de test : Oui
+
+    Recharger les privilèges : Oui
+
+    Démarrer et activer MariaDB :
+    
+"""""""" Apres""""""""
+
+
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+
+Installation de PHP et extensions
+
+sudo apt install php php-mysql php-json php-xml php-curl php-mbstring php-zip php-gd libapache2-mod-php -y
+
+Installation de Joomla
+
+    Aller dans le dossier web :
+
+cd  /var/www/html
+
+sudo nano /etc/resolv.conf
+
+# En cas de problème avec le téléchargement
+Ajoutez ou remplacez par :
+
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+
+    Télécharger Joomla :
+
+sudo curl -L -o Joomla_5-2-5-Stable-Full_Package.zip "https://downloads.joomla.org/cms/joomla5/5-2-5/Joomla_5-2-5-Stable-Full_Package.zip?format=zip"
+
+    Extraire et configurer :
+
+sudo ls
+sudo mkdir joomla
+sudo unzip Joomla_5-2-5-Stable-Full_Package.zip -d /var/www/html/joomla
+# Mon ip addresse 192.168.237.156 --> 192.168.26.1
+sudo mv Joomla joomla
+sudo chown -R www-data:www-data /var/www/html/joomla
+sudo chmod -R 755 /var/www/html/joomla
+
+Création de la base de données Joomla
+
+    Se connecter à MariaDB :
+
+sudo mysql -u root -p
+
+    Exécuter les commandes SQL :
+
+CREATE DATABASE joomla;
+CREATE USER 'joomlauser'@'localhost' IDENTIFIED BY 'user123456';
+GRANT ALL PRIVILEGES ON joomla.* TO 'joomlauser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+Configuration Apache pour Joomla
+
+    Créer un fichier de configuration :
+
+sudo nano /etc/apache2/sites-available/000-default.conf
+
+    Ajouter ce contenu :
+
+<VirtualHost *:443>
+    DocumentRoot /var/www/html/joomla
+    ServerName joomla.local
+    ServerAlias 192.168.237.156 --> 192.168.26.1
+
+    <Directory /var/www/html/joomla>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/joomla_error.log
+    CustomLog ${APACHE_LOG_DIR}/joomla_access.log combined
+</VirtualHost>																																																																																																																																																		
+
+ctr+X
+
+
+sudo service apache2 reload
+
+    Activer le site et le module rewrite :
+
+sudo a2ensite default-ssl
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+# Pour accéder au partie admin
+https://192.168.237.156/administrator
+https://192.168.26.1/administrator
+
+****DNS et HTTPS*****
+
+sudo nano /etc/apache2/ports.conf
+Listen 80
+Listen 443
+
+sudo   openssl   req  -x509   -sha256   -key /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt -days 365
+
+# Qui est le propriétaire du fichier
+sudo chown www-data:www-data /etc/ssl/private/apache-selfsigned.key
+
+# Donné les droit
+sudo chmod 640 /etc/ssl/private/apache-selfsigned.key
+
+# Qui est le propriétaire du fichier
+sudo chown www-data:www-data /etc/ssl/certs/apache-selfsigned.cert
+
+# Donné les droit
+sudo chmod 644 /etc/ssl/certs/apache-selfsigned.cert
+
+sudo systemctl restart apache2
+# Mot de passe : Debian123
+
+sudo nano /etc/hosts
+# ajouter un host
+192.168.237.156 --> 192.168.26.1 joomla.local
+
+sudo nano /etc/apache2/sites-available/default-ssl.conf
+
+<VirtualHost *:443>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/joomla
+    ServerName joomla.local
+    ServerAlias 192.168.237.156 --> 192.168.26.1
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+    SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+
+    <Directory /var/www/html/joomla>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+
+4. Sécurisation du serveur
+Installation et configuration de UFW (pare-feu)
+
+    Installer UFW :
+
+sudo apt install ufw -y
+sudo ufw enable
+
+    Configurer les règles :
+
+sudo ufw allow 80/tcp   # HTTP
+sudo ufw allow 443/tcp  # HTTPS
+sudo ufw allow 3306/tcp # MariaDB
+sudo ufw allow 19550/tcp
+sudo ufw allow 1200/tcp
+sudo ufw allow 152/tcp
+sudo ufw allow 20/tcp
+sudo ufw allow 22/tcp
+sudo ufw allow 21/tcp
+sudo ufw allow ssh
+
+
+sudo ufw reload
+
+
+Installation de Fail2Ban
+
+    Installer Fail2Ban :
+
+sudo apt install fail2ban -y
+
+    Configurer pour Apache :
+
+sudo nano /etc/fail2ban/jail.local
+
+    Ajouter :
+
+[apache-badbots]
+enabled = true
+port    = http,https
+filter  = apache-badbots
+logpath = /var/log/apache2/access.log
+maxretry = 3
+findtime = 3600
+bantime = 86400
+
+[apache-nohome]
+enabled = true
+port    = http,https
+filter  = apache-nohome
+logpath = /var/log/apache2/access.log
+maxretry = 3
+findtime = 3600
+bantime = 86400
+
+[apache-dos]
+enabled = true
+port    = http,https
+filter  = apache-dos
+logpath = /var/log/apache2/access.log
+maxretry = 30
+findtime = 60
+bantime = 600
+
+Vérifier les protections fail2ban activés
+
+sudo fail2ban-client status
+
+    Redémarrer :
+
+sudo systemctl restart fail2ban
+
+Suivre l’assistant d’installation Joomla :
+
+    Entrer les informations de la base de données.
+    Configurer le site.
+    Finaliser l’installation.
+    
+   1. Installer vsftpd
+
+sudo apt update && sudo apt install vsftpd -y
+
+Après l'installation, vérifie que le service est actif :
+
+sudo systemctl status vsftpd
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+-keyout /etc/ssl/private/vsftpd.pem \
+-out /etc/ssl/private/vsftpd.pem
+
+
+Ouvre le fichier de configuration :
+
+sudo nano /etc/vsftpd.conf
+
+Modifie ou ajoute ces lignes :
+
+# Activer FTP anonyme (désactiver pour plus de sécurité)
+anonymous_enable=NO
+
+# Autoriser les utilisateurs locaux
+local_enable=YES
+
+# Activer l'écriture pour les utilisateurs locaux
+write_enable=YES
+
+# Restreindre les utilisateurs à leur dossier personnel
+chroot_local_user=YES
+
+# Sécuriser les connexions avec TLS
+ssl_enable=YES
+#rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+#rsa_private_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+
+rsa_cert_files=/etc/ssl/private/vsftpd.pem
+rsa_private_key_file=/etc/ssl/private/vsftpd.pem
+
+
+Enregistre (Ctrl + X, Y, puis Entrée).
+
+3. Redémarrer vsftpd
+
+#enpos3 nom interface ip debian
+
+Depuis un client FTP (FileZilla), connecte-toi avec :
+
+    Serveur : l'IP du serveur 192.168.237.156 --> 192.168.26.1
+    Utilisateur : debian
+    Mot de passe : debian
+    
+
+1. Vérifier si rsyslog est installé
+
+Tout d'abord, assure-toi que rsyslog est installé sur ton serveur Debian. Tu peux le vérifier avec la commande suivante :
+
+sudo systemctl status rsyslog
+
+Si rsyslog n'est pas installé, tu peux l'installer avec :
+
+sudo apt update
+sudo apt install rsyslog
+
+Configurer le rsyslog
+echo 'module(load="imfile" PollingInterval="10")' >> /etc/rsyslog.conf
+echo 'input(type="imfile" File="/var/log/apache2/error.log"
+Tag="apache" Severity="error" Facility="local7")' >> /etc/rsyslog.conf | sudo see -a /etc/rsyslog.conf 
+
+sudo systemctl restart rsyslog
+
+
+sudo nano /etc/network/interfaces
+
+Ajouter :
+
+auto eth0
+iface eth0 inet static
+    address 192.168.26.1
+    netmask 255.255.255.0
+    gateway 192.168.26.254
+    dns-server 8.8.8.8 8.8.4.4
+Appliquer les modifications :
+
+sudo systemctl restart networking
+
+
+				END
