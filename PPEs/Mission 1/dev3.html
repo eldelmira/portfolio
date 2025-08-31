@@ -1,74 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Porfolio</title>
-    <link rel="stylesheet" href="mystyle1.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Développeur Back-End - Portfolio</title>
+  <link rel="stylesheet" href="mystyle3.css" />
 </head>
-<body style="background-image: url(image11.jpg);">
-     <!--Eldelmira SMART-->
-     <img src="onisep.jpg">
-     <hr>
-     <h1>Développement back-end</h1>
-     <div>
-        <h3>SOMMAIRE</h3>
-        <nav>
-        <li><a href="index.html">ACCEUIL</a>
-        <ul><a href="dev1.html">Developpeur front-end</a></ul>
-        <ul><a href="dev2.html">Developpeur mobile</a></ul>
-        <ul><a href="dev3.html">Developpeur back-end</a></ul>
-        <ul><a href="dev4.html">Developpeur full-stack</a></ul>
-        <ul><a href="lycee.html">Lycée Vilgénis</a></ul></li>
-        </nav>
-        <a href="../../index.html">Retour</a>
-        
+<body>
+
+  <header>
+    <img src="onisep.jpg" alt="Logo Onisep" class="logo" />
+    <h1>Développement Back-End</h1>
+    <hr />
+  </header>
+
+  <section class="sommaire">
+    <h2>Sommaire</h2>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="dev1.html">Développeur Front-End</a></li>
+        <li><a href="dev2.html">Développeur Mobile</a></li>
+        <li><a href="dev3.html">Développeur Back-End</a></li>
+        <li><a href="dev4.html">Développeur Full-Stack</a></li>
+        <li><a href="lycee.html">Lycée Vilgénis</a></li>
+      </ul>
+    </nav>
+    <p><a href="../../index.html">← Retour au Portfolio</a></p>
+  </section>
+
+  <section class="media">
+    <div class="media-row">
+      <img src="image5.jpg" alt="Illustration développeur back-end 1" width="200" height="200" />
+      <img src="image6.png" alt="Illustration développeur back-end 2" width="200" height="200" />
+      <iframe
+        width="300"
+        height="200"
+        src="https://www.youtube.com/embed/3aGi-5kdM9g"
+        title="Qu’est-ce que le développement Back-End ?"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
     </div>
-    <table border="2px">
-        <tr><td><img src="image5.jpg" width="200" height="200"></td><td><img src="image6.png"></td><td><iframe width="764" height="430" src="https://www.youtube.com/embed/3aGi-5kdM9g" title="Qu&#39;est-ce que le développement Back-End?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></td></tr>
-        
-    </table>
-    <div>
-    <p>Tout ce que vous ne voyez pas sur un site web ou une application mobile mais qui permet de les faire fonctionner, c’est le développeur back-end qui s’en occupe. Il traite toutes les informations présentes sur une plateforme.
+  </section>
 
-    </p>
-    <p>Le back-end est en relation directe avec les développeurs front-end et mobile afin de :
+  <main class="content">
+    <article>
+      <p>
+        Tout ce que vous ne voyez pas sur un site web ou une application, mais qui permet de les faire fonctionner, relève du développeur back-end. Il traite, sécurise et expose les données nécessaires aux fonctionnalités visibles côté client.
+      </p>
 
-        recevoir et traiter les informations dont le développeur front-end ou mobile a besoin ;
-    
-        stocker ces informations dans une base de données ;
-    
-        envoyer toutes les informations dont les développeurs front-end ou mobile ont besoin. 
-    </p>
-    <p>Les missions principales du développeur back-end
+      <p>
+        En lien direct avec les développeurs front-end et mobile, le back-end permet de :
+      </p>
+      <ul>
+        <li>Recevoir et traiter les informations dont l’interface a besoin</li>
+        <li>Stocker ces informations dans une base de données</li>
+        <li>Renvoyer des données prêtes à être utilisées côté front</li>
+      </ul>
 
-        Le développement back-end correspond au développement côté serveur. 
-        
-            Vous avez dit serveur ?
-        
-        Le navigateur est considéré comme la partie client. C’est le front-end qui s’en occupe. Le back-end, lui, travaille du côté serveur.
-    </p>
+      <h3>Le rôle côté serveur</h3>
+      <p>
+        Le développement back-end se fait côté <em>serveur</em> (par opposition au <em>client</em> dans le navigateur). Tout ce qui s’y passe est invisible pour l’utilisateur final mais essentiel au bon fonctionnement :
+      </p>
+      <ul>
+        <li>Concevoir des API fiables et documentées</li>
+        <li>Analyser et manipuler des données (CRUD)</li>
+        <li>Assurer la sécurité, l’authentification et l’autorisation</li>
+        <li>Optimiser les performances et la scalabilité</li>
+        <li>Collaborer avec le front pour une expérience fluide</li>
+      </ul>
 
-    <p>
-        Tout ce qui se passe côté serveur, l’utilisateur ne le voit pas. Le back-end est donc responsable de :
+      <h3>Compétences clés</h3>
+      <p>
+        Des bases en <strong>HTML</strong>, <strong>CSS</strong> et <strong>JavaScript</strong> aident à comprendre l’ensemble, mais le cœur du back-end, c’est :
+      </p>
+      <ul>
+        <li>Au moins un langage serveur (ex. <strong>Python</strong>, <strong>Node.js</strong>, <strong>Ruby</strong>, <strong>PHP</strong>, <strong>Java</strong>, <strong>C#</strong>)</li>
+        <li>Les bases de données (<strong>SQL</strong> / <strong>NoSQL</strong>) et la modélisation</li>
+        <li>Les architectures et bonnes pratiques (tests, logs, monitoring, CI/CD)</li>
+        <li>La conception et l’utilisation d’API (REST, GraphQL)</li>
+      </ul>
 
-    analyser des données et échanger avec une base de données (insérer, modifier, récupérer ou supprimer des données ) ;
+      <p>
+        Le développeur back-end représente le cœur d’un projet : sans lui, les données ne transitent pas et les fonctionnalités ne peuvent pas fonctionner correctement.
+      </p>
+    </article>
+  </main>
 
-    collaborer avec les développeurs front-end et mobile pour concevoir les codes les plus cohérents pour l’expérience de l’utilisateur ;
+  <footer>
+    <p>© 2024 Eldelmira SMART - Portfolio</p>
+  </footer>
 
-    établir la bonne communication entre les développeurs front-end et mobile, et la base de données  ;
-
-Le développeur back-end représente le cœur d’un projet. Sans lui, aucune donnée ne transite. Il permet la bonne communication entre le front-end et la base de données.
-    </p>
-    <p>Encore une fois, le HTML, le CSS et le JavaScript sont une base à avoir, mais le développeur back-end doit avant tout avoir une bonne logique, une bonne connaissance des bases de données et d’au moins un langage back-end comme le Python, Node.js, Ruby...
-
-        Il doit savoir comment architecturer un projet, comprendre comment les serveurs fonctionnent (évidemment), et surtout comment les monitorer.
-    </p>
-    <p>
-        Il doit savoir construire et utiliser une API
-
-Une API, ou “interface de programme d’application”, est un logiciel intermédiaire qui permet à deux applications de communiquer entre elles.
-    </p>
-    </div>
 </body>
 </html>
