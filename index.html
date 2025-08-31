@@ -1,234 +1,161 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projet GNS3 – Joomla sur Debian 12</title>
-  <meta name="color-scheme" content="light dark" />
-
-  <style>
-    /* ========= Palette douce & pro ========= */
-    :root{
-      --bg:        #f6f7fb;
-      --card:      #ffffff;
-      --text:      #1f2937;       /* gris anthracite */
-      --muted:     #6b7280;
-      --primary:   #2d6cdf;       /* bleu calme */
-      --primary-2: #245bc0;
-      --accent:    #eef2ff;       /* bleu très pâle */
-      --border:    #e5e7eb;
-      --radius:    14px;
-      --shadow:    0 10px 28px rgba(17,24,39,.08);
-      --thead:     #fff36a;       /* jaune doux pour en-têtes de tableaux */
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0f172a; --card:#0b1220; --text:#e5e7eb; --muted:#a1a1aa;
-        --primary:#6aa2ff; --primary-2:#8bb6ff; --accent:#0f1a33; --border:#1f2a44;
-        --thead:#796f00;
-        --shadow:0 10px 28px rgba(0,0,0,.36);
-      }
-    }
-
-    /* ========= Reset court ========= */
-    *,*::before,*::after{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
-    body{
-      margin:0; background: radial-gradient(1200px 600px at 70% -20%, var(--accent), transparent 60%), var(--bg);
-      color:var(--text);
-      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,sans-serif;
-      line-height:1.6;
-    }
-    a{ color:var(--primary); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    a:focus-visible{ outline:3px solid color-mix(in srgb, var(--primary) 40%, transparent); outline-offset:3px; border-radius:8px; }
-
-    /* ========= Layout ========= */
-    .container{ width:min(1100px,92%); margin-inline:auto; }
-    .section{ padding:28px 0; }
-    .grid{ display:grid; gap:18px; }
-    .two{ grid-template-columns: 1fr 1fr; }
-    @media (max-width: 900px){ .two{ grid-template-columns:1fr; } }
-
-    /* ========= Header / Hero ========= */
-    header{
-      padding: 24px 0 18px;
-      border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.0), rgba(255,255,255,.0));
-    }
-    .hero{ display:grid; grid-template-columns: 1.2fr .9fr; gap:22px; align-items:center; }
-    @media (max-width: 900px){ .hero{ grid-template-columns:1fr; } }
-
-    .title{ margin:8px 0 6px; font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem); letter-spacing:.2px; }
-    .subtitle{ color:var(--muted); max-width:65ch; }
-    .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-    .tag{
-      display:inline-block; padding:6px 10px; border-radius:999px;
-      background:var(--accent); border:1px solid var(--border); color:var(--text); font-weight:600; font-size:.9rem;
-    }
-    .hero-media{
-      margin:0; background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-      overflow:hidden; box-shadow:var(--shadow);
-    }
-    .hero-media img{ display:block; width:100%; height:auto; }
-    .hero-media figcaption{ font-size:.9rem; color:var(--muted); padding:10px 12px; border-top:1px solid var(--border); }
-
-    /* ========= Cards / Blocs ========= */
-    .card{
-      background:var(--card); border:1px solid var(--border);
-      border-radius:var(--radius); padding: clamp(16px, 2.8vw, 22px); box-shadow:var(--shadow);
-    }
-    h2{ margin:4px 0 10px; font-size: clamp(1.1rem, .9rem + 1.1vw, 1.6rem); }
-    h3{ margin:14px 0 8px; }
-
-    /* ========= KV grid (clé / valeur) ========= */
-    .kv{
-      display:grid; grid-template-columns: 220px 1fr; gap:8px 14px;
-      padding:10px 12px; background:#fafbfd; border:1px solid var(--border); border-radius:10px;
-    }
-    .kv dt{ color:var(--muted); }
-    .kv dd{ margin:0; }
-    @media (max-width: 620px){ .kv{ grid-template-columns:1fr; } }
-
-    /* ========= Tableaux ========= */
-    .table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-    table{ width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-    thead th{
-      background: var(--thead);
-      color:#1d1d1d;
-      text-align:center; font-weight:800;
-      padding:12px 14px; border-bottom:1px solid var(--border);
-    }
-    tbody td{ padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
-    tbody tr:nth-child(even) td{ background: color-mix(in srgb, var(--card) 92%, var(--border)); }
-    td ul{ margin:0; padding-left:1.1rem; }
-    td li{ margin:4px 0; }
-
-    /* ========= Ports badges ========= */
-    .port-badges{ display:flex; flex-wrap:wrap; gap:8px; }
-    .badge{
-      display:inline-block; background:#e8efff; color:#1f3b68; border:1px solid #d9e3ff;
-      padding:6px 10px; border-radius:10px; font-weight:700; font-size:.95rem;
-    }
-
-    /* ========= Media embeds ========= */
-    .diagram{ margin:10px 0 2px; }
-    .diagram img{ width:100%; height:auto; border-radius:10px; border:1px solid var(--border); }
-    .embed{ position:relative; width:100%; aspect-ratio:16/9; }
-    .embed iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
-
-    /* ========= Footer ========= */
-    footer{ border-top:1px solid var(--border); padding:22px 0 36px; color:var(--muted); text-align:center; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mystyle3.css">
+    <title>Portfolio</title>
+    
 </head>
 <body>
-  <header>
-    <div class="container hero">
-      <div>
-        <h1 class="title">Déploiement d’un site Joomla sur Debian 12 <span class="tag">GNS3</span></h1>
-        <p class="subtitle">
-          Architecture virtuelle <strong>Routeur → Commutateur → Serveur → PC client</strong>, sécurisée et 100% logiciels <strong>libres</strong>.
-          Mise en place d’<strong>HTTPS</strong>, durcissement des services, pare-feu et protections Fail2ban.
-        </p>
-        <div class="tags">
-          <span class="tag">Debian 12 (sans GUI)</span>
-          <span class="tag">Joomla (CMS)</span>
-          <span class="tag">HTTPS / TLS</span>
-          <span class="tag">UFW + Fail2ban</span>
-          <span class="tag"><a href="Recette de déploiement.txt">Recette</a></span>
-          <span class="tag">
-  
-</span>
-
-          <span class="tag"><a href="/portfolio/index.html">Retour</a></span>
-          
-
-        </div>
+    <div class="titre">
+      <div class="logo-titre">
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1 style="margin-top: 10px;">Bienvenue à mon Portfolio</h1>
       </div>
-
-      <figure class="hero-media">
-        <img src="schema-gns3.png" alt="Schéma de l’architecture GNS3 (Routeur–Switch–Serveur–PC Client)" />
-        <figcaption>Architecture virtuelle dans GNS3.</figcaption>
-      </figure>
+      
+      <br>
     </div>
-  </header>
+  
+  
+    
+    <br>
+<nav>
+            <div class="menu-toggle">Menu</div>
+        <ul>
+            <li class="html"><a href="#">HTML & CSS</a>
+            <ul class="sousmenu" style="background-color: rgba(180, 146, 255); ">
+                <li><a href="TP1/index.html">TP1</a></li>
+                <li><a href="TP2/index.html">TP2</a></li>
+                <li><a href="TP3/index.html">TP3</a></li>
+                <li><a href="TP4/index.html">TP4</a></li>
 
-  <main>
-    <section class="section">
-      <div class="container grid two">
-        <article class="card">
-          <h2>Contexte du projet</h2>
-          <dl class="kv">
-            <dt>CMS</dt><dd>Joomla</dd>
-            <dt>OS serveur</dt><dd>Debian 12 (sans affichage GUI)</dd>
-            <dt>Logiciels</dt><dd>Exclusivement des solutions libres</dd>
-            <dt>Objectif</dt><dd>Publication d’un site avec chiffrement TLS et surface d’attaque minimale</dd>
-          </dl>
 
-          <h3>Architecture</h3>
-          <ul>
-            <li><strong>Routeur</strong> (NAT / Internet)</li>
-            <li><strong>Commutateur</strong></li>
-            <li><strong>Serveur Debian</strong> (Apache, MariaDB, Joomla)</li>
-            <li><strong>PC Client</strong> (tests d’accès et validation)</li>
-          </ul>
-        </article>
+            </ul>
+            </li>
+    
+       
+        
+            <li class="javascript"><a href="#">Javascript</a>
+            <ul class="sousmenu" style="background-color: rgba(108, 191, 132); ">
+                <li><a href="TP_JS1/index.html">TP1</a></li>
+                <li><a href="TP_JS2/index.html">TP2</a></li>
+                <li><a href="TP JS3/index.html">TP3</a></li>
+                <li><a href="TP_JS4/index.html">TP4</a></li>
+            
+            </ul>
+            </li>
+        
+       
+         
 
-        <article class="card">
-          <h2>Contraintes & conformité</h2>
-          <ul>
-            <li>Protocoles actifs : <strong>HTTP</strong> et <strong>HTTPS</strong></li>
-            <li><strong>HTTPS</strong> activé sur le port <strong>443</strong> (certificat + redirection HTTP→HTTPS)</li>
-            <li>Ports <strong>uniquement</strong> autorisés : <span class="port-badges">
-              <span class="badge">80/TCP</span>
-              <span class="badge">443/TCP</span>
-              <span class="badge">3306/TCP</span>
-              <span class="badge">19550/TCP</span>
-            </span></li>
-            <li>IP statique du serveur : <strong>192.168.26.1</strong></li>
-            <li>Réseau capable d’accueillir jusqu’à <strong>255</strong> postes via DHCP</li>
-          </ul>
-        </article>
-      </div>
-    </section>
+        
+        
+        
+            <li class="bdd"><a href="#">Epreuve 5</a>
+            <ul class="sousmenu" style="background-color: rgba(0, 165, 198); ">
+                <li><a href="VEILLE TECHNOLOGIE/index.html">VEILLE</a></li>
+                <li><a href="Stage/index.html">STAGE</a></li>
+            
+        </ul>
+        </li>
+       
+        
+    
+            <li class="php"><a href="#">Réseaux</a>
+            <ul class="sousmenu" style="background-color: rgba(209, 158, 203); ">
+                <li><a href="packet tracer/index.html">Cisco</a></li>
+                <li><a href="Projet joomla/index.html">JOOMLA P</a></li>
+            
+            </ul>
+        </li>
+        
 
-    <section class="section">
-      <div class="container grid two">
-        <article class="card">
-          <h2>Services & protections</h2>
+        
 
-          <!-- Tableau double colonne comme ta capture -->
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>La liste des services actifs</th>
-                  <th>La liste des protections Fail2ban actives</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <ul>
-                      <li>MariaDB</li>
-                      <li>Apache2</li>
-                      <li>ufw</li>
-                      <li>rsyslog</li>
-                      <li>fail2ban</li>
-                      <li>openssh-server</li>
-                      <li>vsftpd</li>
-                    </ul>
-                  </td>
-                  <td>
-                    <ul>
-                      <li>apache-badbots</li>
-                      <li>apache-nohome</li>
-                      <li>apache-dos</li>
-                    </ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <li class="mission"><a href="#">Missions</a>
+            <ul class="sousmenu" style=" background-color: rgba(244, 179, 147);">
+                <li><a href="PPEs/Mission 1/index.html">Mission1</a></li>
+                <li><a href="PPEs/Mission 2/index.html">Mission2</a></li>
+                <li><a href="PPEs/Mission 3/index.html">Mission3</a></li>
+                <li><a href="PPEs/Mission 4/index.html">Mission4</a></li>
+                <li><a href="PPEs/Mission 6/index.html">Mission6</a></li>
+                <li><a href="PPEs/Mission 8/index.html">Mission8</a></li>
+                <li><a href="PPEs/Mission 9/index.html">Mission9</a></li>
+                <li><a href="PPEs/Mission 10/index.html">Mission10</a></li>
+            
+                </a></li>
+            <br>
+        </ul>
+        </li>
+        
 
-          <h3>Notes sécurité</h3>
+        
+
+        
+            <li class="certification"><a href="#">Certification</a>
+            <ul class="sousmenu" style=" background-color: rgba(74, 111, 165);">
+                <li><a href="Certificat_.pdf">Certification1</a></li>
+                <li><a href="Attestation_de_suivi.pdf">Certification2</a></li>
+                <li><a href="Certificat1_.pdf">Certification3</a></li>
+                <li><a href="Certificat2_.pdf">Certification4</a></li>
+                <li><a href="Certificat3_.pdf">Certification5</a></li>
+                <li><a href="Certificat12.pdf">Certification6</a></li>
+            
+        </ul>
+        
+    </li>
+    
+    
+            <li class="projects"><a href="#">Autres projets</a>
+            <ul class="sousmenu" style="background-color: rgba(182, 110, 110);">
+                <li><a href="Autres Projets/Projet 1/cv.html">TP1</a></li>
+                <li><a href="Autres Projets/Projet 2/index.html">TP2</a></li>
+                <li><a href="Autres Projets/Projet 3/index.html">TP3</a></li>
+                <li><a href="Autres Projets/Projet 4/index.html">TP4</a></li>
+                <li><a href="Autres Projets/Projet 5/index.html">TP5</a></li>
+                <li><a href="Autres Projets/Projet 6/index.html">TP6</a></li>
+                
+            <br>
+            </ul>
+        </li>
+
+        
+</nav>
+
+<div>
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navUl = document.querySelector('nav > ul');
+
+    menuToggle.addEventListener('click', () => {
+        navUl.classList.toggle('open');
+    });
+
+    // Gestion sous-menus au clic sur mobile
+    const menuItems = document.querySelectorAll('nav > ul > li');
+
+    menuItems.forEach(item => {
+        const submenu = item.querySelector('.sousmenu');
+        if (submenu) {
+            // On intercepte le clic sur le lien parent uniquement pour mobiles
+            item.querySelector('a').addEventListener('click', e => {
+                if (window.innerWidth <= 680) {
+                    e.preventDefault(); // Empêche le lien de naviguer
+                    submenu.classList.toggle('open');
+                }
+            });
+        }
+    });
+});
+</script>
+
+
+<footer>© 2025 Eldelmira SMART Porfolio</footer>
+</body>
+</html>
