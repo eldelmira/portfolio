@@ -281,6 +281,94 @@ nav input[type=checkbox]:checked ~ ul{
     margin: 10px auto;
     width: fit-content;
 }
+/*                                                           */
+
+/* --- Corrections globales utiles --- */
+li a { position: relative; }                 /* pour ton ::after animé */
+nav .sousmenu { z-index: 10; }               /* nombre, pas "10px" */
+nav  .sousmenu li:hover { width: 210px; }    /* largeur avec unité */
+a, ul { padding: 0; }                        /* "padding: auto" est invalide */
+
+/* --- TABLETTE : aligne en blocs, sans chevauchement --- */
+/* adapte la plage si besoin ; ici 681–1024px = tablette */
+@media screen and (min-width: 681px) and (max-width: 1024px) {
+
+  /* Le conteneur du menu ne doit pas être "fixed" en tablette,
+     sinon il passe AU-DESSUS du contenu et gêne les hover/tap */
+  nav > ul {
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 colonnes */
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  /* Chaque item prend sa place dans la grille, plus de float */
+  nav > ul > li {
+    float: none !important;
+    position: static !important; /* le parent n'est plus le repère d'un dropdown absolu */
+    width: auto;
+    padding: 8px 12px;
+    background: rgba(24,9,9,0.9);
+    border-radius: 12px;
+  }
+
+  /* Lien en bloc pour une zone de clic propre */
+  nav > ul > li > a {
+    display: block;
+    padding: 10px 12px;
+  }
+
+  /* Les sous-menus passent en flux, sous leur item, largeur 100% */
+  nav .sousmenu {
+    display: none !important;  /* caché par défaut */
+    position: static !important;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    background-color: #2e4053;
+    padding: 8px 0;
+  }
+
+  /* Items du sous-menu en colonne, pleine largeur */
+  nav .sousmenu li {
+    width: 100% !important;
+    background: transparent;
+    border: 0;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  /* OUVERTURE au survol (souris) OU au focus (tap clavier/tactile) */
+  nav > ul > li:hover > .sousmenu,
+  nav > ul > li:focus-within > .sousmenu {
+    display: block !important;
+  }
+
+  /* Évite que d'anciennes règles re-forcent un dropdown absolu */
+  nav li:hover .sousmenu {
+    display: block !important;   /* au cas où "list-item" traîne */
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    border: none !important;
+    width: 100% !important;
+  }
+}
+
+
+
+
+
+
+/*                                                           */
+
+
+
+
 
 /* L’AFFICHER uniquement en petit écran */
 @media screen and (max-width: 1372px) {
