@@ -283,14 +283,14 @@ nav input[type=checkbox]:checked ~ ul{
 }
 
 /* L’AFFICHER uniquement en petit écran */
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 1372px) {
     .menu-toggle {
         display: block;
     }
 }
 
 
-@media screen and (max-width: 680px){
+@media screen and (max-width: 1372px){
     .none{
         flex-direction: column; 
         display: block;
