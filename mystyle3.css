@@ -283,14 +283,7 @@ nav input[type=checkbox]:checked ~ ul{
 }
 /*                                                           */
 
-/* --- Corrections globales utiles --- */
-li a { position: relative; }                 /* pour ton ::after animé */
-nav .sousmenu { z-index: 10; }               /* nombre, pas "10px" */
-nav  .sousmenu li:hover { width: 210px; }    /* largeur avec unité */
-a, ul { padding: 0; }                        /* "padding: auto" est invalide */
 
-/* --- TABLETTE : aligne en blocs, sans chevauchement --- */
-/* adapte la plage si besoin ; ici 681–1024px = tablette */
 @media screen and (min-width: 681px) and (max-width: 1024px) {
 
   /* Le conteneur du menu ne doit pas être "fixed" en tablette,
