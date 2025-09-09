@@ -1,0 +1,368 @@
+					Recette de l'infrastructure Louvre
+
+
+############################
+Créations des VLANS        #
+############################
+
+"Sur switch "
+
+Mot de passe : root
+
+en
+conf t
+vlan  10
+name Administration
+vlan  20
+name Reseau_Visiteurs
+vlan  30
+name expo_interactive
+vlan  40
+name Securite
+vlan  50
+name Base-de-Paiement
+vlan  60
+name Reseau-scientifique
+vlan  99
+name Serveurs-Proxmox
+exit
+End
+show vlan  brief
+
+#############################
+Configurations des VLANS    #
+#############################
+
+
+"Sur switch 1"
+
+!VLAN 99
+
+inter range fa1/0/24
+sw mode acc
+sw acc vlan  99
+
+
+!VLAN 50
+
+inter fa1/0/19-22
+sw mode acc
+sw acc vlan  50 
+
+
+!VLAN 10
+
+inter range fa1/0/1-4
+sw mode acc
+sw acc vlan  10
+
+
+!VLAN 60
+
+inter range fa1/0/23
+sw mode acc
+sw acc vlan  60
+
+
+!VLAN 30
+
+inter range fa1/0/9-13
+sw mode acc
+sw acc vlan  30
+
+
+!VLAN 20
+
+inter range fa1/0/5-8
+sw mode acc
+sw acc vlan  20
+
+
+!VLAN 40
+
+inter range fa1/0/14-18
+sw mode acc
+sw acc vlan  40
+
+
+"Sur le switch 2"
+
+!VLAN 99
+
+inter range fa0/24
+sw mode acc
+sw acc vlan  70
+
+
+!VLAN 50
+
+inter fa0/19-22
+sw mode acc
+sw acc vlan  50 
+
+
+!VLAN 10
+
+inter range fa0/1-4
+sw mode acc
+sw acc vlan  10
+
+
+!VLAN 60
+
+inter fa0/23
+sw mode acc
+sw acc vlan  60
+
+
+!VLAN 30
+
+inter range fa0/9-13
+sw mode acc
+sw acc vlan  30
+
+
+!VLAN 20
+
+inter range fa0/5-8
+sw mode acc
+sw acc vlan  20
+
+
+!VLAN 40
+
+inter range fa0/14-18
+sw mode acc
+sw acc vlan  40"
+
+
+##############################
+Configurations des trunks    #
+##############################
+
+"Sur le switch 1" (Layer 3)
+
+enable
+configure terminal
+
+interface gigabitEthernet1/0/1
+ switchport mode trunk
+ switchport trunk native vlan  99
+ switchport trunk allowed vlan all
+ no shutdown
+exit
+
+interface GigabitEthernet1/0/2
+ switchport mode trunk
+ switchport trunk native vlan  99
+ switchport trunk allowed vlan  10,20,30,40,50,60,99
+ no shutdown
+exit
+
+"Sur switch 2"
+
+enable
+
+
+configure terminal
+
+interface GigabitEthernet0/1
+ switchport mode trunk
+ switchport trunk native vlan  99
+ switchport trunk allowed vlan  10,20,30,40,50,60,70,99
+ no shutdown
+exit
+
+end
+write memory
+
+"!VLAN 99 gestion"
+
+
+ interface vlan 99
+ ip address 192.168.99.1 255.255.255.0
+ no shutdown
+ ip default-gateway 192.168.99.1
+
+
+#######################
+		      #
+Sur switch layer 3    #
+		      #	
+#######################
+
+configure terminal
+
+interface vlan 10
+ ip add address 192.168.10.1
+no shut
+exit
+
+interface vlan 20
+ ip add address 192.168.20.1
+no shut
+exit
+
+interface vlan 30
+  ip add 192.168.30.1
+no shut
+exit
+
+interface vlan 40
+ip add 192.168.40.1
+no shut
+exit
+
+interface vlan 60
+ ip add 192.168.60.1
+no shut
+exit
+
+interface vlan 99
+ip add 192.168.99.1
+no shut
+exit
+
+interface vlan 50
+ip add 192.168.50.1
+no shut
+exit
+
+end
+
+ip routing
+
+#######################################################
+						      #
+MISE EN PLACE DU VTP SUR LES SWITCH VOICI LA CONFIG   #
+						      #
+#######################################################
+
+conf t sur SW1 
+vtp mode server 
+vtp domain LOUVRE
+vtp password mdpvtp
+
+vlan 10
+name admin_10
+
+vlan 20
+name Reseau-visiteur_20
+
+vlan 30
+name expo-interactive_30
+
+vlan 40 
+
+name securite_40
+
+vlan 50
+
+name base-de-paiement_50
+
+vlan 60
+
+name reseau-scientifique_60
+
+vlan 99 
+
+name Service-Proxmox
+
+end 
+
+wr
+
+conf t sur SW1 ET SW2 
+vtp mode client 
+vtp domain LOUVRE
+vtp password mdpvtp
+end
+wr
+
+conf t 
+interface Gigabit0/1
+switchport mode trunk
+end
+wr
+ 
+
+
+
+end
+write memory
+
+
+
+#############################
+			    #
+Promox DHCP et dns et ACL   #
+			    #
+#############################
+
+
+
+
+
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+ip dhcp excluded-address 192.168.40.1 192.168.40.10
+ip dhcp excluded-address 192.168.50.1 192.168.50.10
+ip dhcp excluded-address 192.168.60.1 192.168.60.10
+ip dhcp excluded-address 192.168.99.1 192.168.99.10
+
+ip dhcp pool VLAN10
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN20
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN30
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN40
+ network 192.168.40.0 255.255.255.0
+ default-router 192.168.40.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN50
+ network 192.168.50.0 255.255.255.0
+ default-router 192.168.50.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN60
+ network 192.168.60.0 255.255.255.0
+ default-router 192.168.60.1
+ dns-server 8.8.8.8 1.1.1.1
+
+ip dhcp pool VLAN99
+ network 192.168.99.0 255.255.255.0
+ default-router 192.168.99.1
+ dns-server 8.8.8.8 1.1.1.1
+
+DNS AU ROUTEUR
+ip domain-lookup
+ip name-server 8.8.8.8
+ip name-server 1.1.1.1
+ACL CONFIG A FAIRE
+
+access-list 100 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+access-list 100 permit ip any any
+
+interface GigabitEthernet0/1.20
+ ip access-group 100 in
+
+
+
+
+mdp : root
+passwd : root
+
+
+
