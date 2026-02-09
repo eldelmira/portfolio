@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Station F – Guide d’infrastructure réseau (HTML/CSS/JS)</title>
+  <style>
+    :root{
+      --bg:#0b1320;          /* fond sidebar */
+      --bg-2:#0f172a;        /* fond page */
+      --card:#111827;        /* cartes */
+      --muted:#94a3b8;       /* texte secondaire */
+      --text:#e5e7eb;        /* texte principal */
+      --brand:#38bdf8;       /* cyan */
+      --brand-2:#22c55e;     /* vert */
+      --accent:#f59e0b;      /* amber */
+      --danger:#ef4444;      /* rouge */
+      --ok:#10b981;          /* vert ok */
+      --code:#0b1020;
+      --border:#1f2937;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; display:grid; grid-template-columns:320px 1fr; grid-template-rows:100%;
+      background:var(--bg-2); color:var(--text); font:16px/1.5 system-ui,Segoe UI,Roboto,Ubuntu,Arial;
+    }
+    /* Sidebar */
+    aside{
+      position:sticky; top:0; height:100vh; overflow:auto; padding:22px; background:linear-gradient(180deg, var(--bg), #0b1530);
+      border-right:1px solid var(--border);
+    }
+    .brand{display:flex; gap:10px; align-items:center; margin-bottom:18px}
+    .brand .dot{width:12px; height:12px; border-radius:50%; background:var(--brand)}
+    .brand h1{font-size:18px; margin:0}
+    .small{color:var(--muted); font-size:12px}
+    nav{margin-top:12px}
+    nav a{
+      display:block; padding:10px 12px; margin:6px 0; border-radius:12px; color:var(--text); text-decoration:none; border:1px solid transparent;
+    }
+    nav a:hover, nav a.active{background:#0e223d; border-color:#132a4a}
+
+    /* Content */
+    main{padding:34px; min-width:0}
+    .toolbar{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .search{flex:1; display:flex; align-items:center; gap:8px; background:#0c1b33; padding:10px 12px; border-radius:12px; border:1px solid #152647}
+    .search input{flex:1; background:transparent; border:0; color:var(--text); outline:none}
+    .tag{font-size:12px; padding:4px 8px; border:1px solid #1d2f52; border-radius:999px; color:var(--muted)}
+
+    section{margin-top:28px}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px;}
+    h2{margin:0 0 12px 0; font-size:26px}
+    h3{margin:18px 0 8px; font-size:18px; color:#eaf2ff}
+    p{margin:8px 0}
+
+    details{background:#0c1323; border:1px solid #17223b; border-radius:14px; padding:0; margin:10px 0; overflow:hidden}
+    details > summary{list-style:none; cursor:pointer; padding:14px 16px; font-weight:600; display:flex; align-items:center; gap:10px}
+    details[open] > summary{background:#0f1e3b}
+    details .content{padding:14px 18px; border-top:1px dashed #1c2d54}
+    .pill{font-size:12px; background:#112449; color:#b6dbff; padding:2px 8px; border-radius:999px; border:1px solid #1f3a6a}
+
+    /* Tables */
+    table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:14px; border:1px solid #1e2a42}
+    thead th{background:#0f1f39; color:#cfe8ff; text-align:left; padding:10px 12px; border-bottom:1px solid #1e2a42}
+    tbody td{padding:10px 12px; border-bottom:1px solid #18243c}
+    tbody tr:last-child td{border-bottom:0}
+
+    /* Code blocks */
+    pre{background:var(--code); border:1px solid #15223d; border-radius:14px; padding:16px; overflow:auto; position:relative;}
+    code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:13px}
+    .copy{
+      position:absolute; top:10px; right:10px; background:#0d203f; border:1px solid #17325e; color:#cfe8ff; padding:6px 10px; border-radius:8px; cursor:pointer;
+    }
+    .ok{color:var(--ok); font-weight:600}
+    .warn{color:var(--accent); font-weight:600}
+    .bad{color:var(--danger); font-weight:600}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
+
+    @media (max-width:1000px){body{grid-template-columns:1fr} aside{display:none} main{padding:18px}}
+  </style>
+</head>
+<body>
+  <aside>
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>Station F – Infra Guide</h1>
+    </div>
+    <div class="small">Tout-en-un : VLAN, Core/Access, Proxmox, Stormshield, ADDS/DHCP/DNS, GPO, GLPI, Azure & Wi‑Fi, File Server, Windows 11.</div>
+    <nav id="toc">
+      <a href="#intro" class="active">Accueil</a>
+      <a href="#lot1">LOT 1 – Infrastructure réseau</a>
+      <a href="#vlan">VLAN & Plan IP</a>
+      <a href="#core">Core & Access Switches</a>
+      <a href="#stormshield">Pare-feu Stormshield</a>
+      <a href="#proxmox">Proxmox VE (bridges)</a>
+      <a href="#adds">AD DS 2025 + DNS + DHCP</a>
+      <a href="#gpo">GPO (sécurité & postes)</a>
+      <a href="#files">File Server (SMB/NTFS)</a>
+      <a href="#win11">Windows 11 (joindre domaine)</a>
+      <a href="#glpi">GLPI (ITSM)</a>
+      <a href="#azure">Wi‑Fi / Azure</a>
+      <a href="#tests">Tests & validation</a>
+      <a href="#annexes">Annexes</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="toolbar card">
+      <div class="search" title="Rechercher dans les sections (filtrage instantané)">
+        🔎 <input id="q" placeholder="Rechercher une étape, un service, une commande…"/>
+      </div>
+      <span class="tag">Style : classique pro</span>
+      <span class="tag">Projet : Station F (Paris)</span>
+    </div>
+
+    <section id="intro" class="card">
+      <h2>Accueil</h2>
+      <p>Ce guide interactif regroupe la <strong>documentation opérationnelle</strong> de l’infrastructure réalisée : VLAN, cœur et accès, Proxmox, Stormshield, Active Directory (DNS/DHCP), GPO, File Server, Windows 11, GLPI et Wi‑Fi/Azure.</p>
+      <p>Utilisez le menu à gauche pour naviguer, les <em>sections repliables</em> pour dérouler les procédures, et les boutons <code>Copier</code> pour récupérer des commandes.</p>
+    </section>
+
+    <!-- LOT 1 -->
+    <section id="lot1" class="card section">
+      <h2>LOT 1 – Infrastructure réseau</h2>
+      <p><span class="pill">Objectif</span> Mettre en place une <strong>infrastructure réseau sécurisée, segmentée et performante</strong> sur un <strong>Switch Core (L3)</strong> et <strong>2 switches d’accès (L2)</strong> : VLAN, routage inter‑VLAN, NAT (via Stormshield) et plan d’adressage.</p>
+      <details open>
+        <summary>À livrer (Lot 1)</summary>
+        <div class="content">
+          <ul>
+            <li>Schéma logique & physique (Core ⇄ Access ⇄ Stormshield).</li>
+            <li>Plan d’adressage VLAN + IP SVI.</li>
+            <li>Configs sauvegardées : Core & Access, règles de base sur Stormshield.</li>
+            <li>Journal des tests : ping inter‑VLAN, NAT/Internet, ACL.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- VLAN & Plan IP -->
+    <section id="vlan" class="card">
+      <h2>VLAN & Plan d’adressage</h2>
+      <p>Définir la segmentation logique. Exemple issu de votre cahier des charges :</p>
+      <div class="grid">
+        <div>
+          <table aria-label="vlan-table">
+            <thead><tr><th>VLAN</th><th>Nom</th><th>Réseau / Masque</th><th>IP SVI</th><th>Rôle</th></tr></thead>
+            <tbody>
+              <tr><td>10</td><td>Mana</td><td>172.16.0.0/19</td><td>172.16.31.254</td><td>Administration & SSH</td></tr>
+              <tr><td>20</td><td>Office</td><td>172.16.32.0/19</td><td>172.16.63.254</td><td>Utilisateurs</td></tr>
+              <tr><td>30</td><td>Invités / Wi‑Fi</td><td>172.16.192.0/19</td><td>172.16.223.254</td><td>Wi‑Fi isolé</td></tr>
+              <tr><td>100</td><td>DMZ Publique</td><td>172.16.96.0/20</td><td>172.16.111.254</td><td>Exposition contrôlée</td></tr>
+              <tr><td>200</td><td>DMZ Privée</td><td>172.16.112.0/20</td><td>172.16.127.254</td><td>Services internes</td></tr>
+              <tr><td>301</td><td>digimedia</td><td>172.16.64.0/27</td><td>172.16.64.30</td><td>Segments dédiés</td></tr>
+              <tr><td>302</td><td>atema</td><td>172.16.64.0/27</td><td>172.16.64.62</td><td>Segments dédiés</td></tr>
+              <tr><td>303</td><td>hostit</td><td>172.16.64.0/27</td><td>172.16.64.94</td><td>Segments dédiés</td></tr>
+              <tr><td>304</td><td>donicharity</td><td>172.16.64.0/27</td><td>172.16.64.126</td><td>Segments dédiés</td></tr>
+              <tr><td>305</td><td>antiquecafe</td><td>172.16.64.0/27</td><td>172.16.64.158</td><td>Segments dédiés</td></tr>
+              <tr><td>306</td><td>elflyer</td><td>172.16.64.0/27</td><td>172.16.64.190</td><td>Segments dédiés</td></tr><tr>
+              <tr><td>307</td><td>cycle</td><td>172.16.64.0/27</td><td>172.16.64.222</td><td>Segments dédiés</td></tr>
+              <tr><td>308</td><td>finexo</td><td>172.16.64.0/27</td><td>172.16.64.254</td><td>Segments dédiés</td></tr>
+              <tr><td>309</td><td>restaurant</td><td>172.16.64.0/27</td><td>172.16.65.30</td><td>Segments dédiés</td></tr>
+              <tr><td>310</td><td>littlefashion</td><td>172.16.64.0/27</td><td>172.16.65.62</td><td>Segments dédiés</td></tr>
+              <tr><td>311</td><td>onyxdigital</td><td>172.16.64.0/27</td><td>172.16.65.94</td><td>Segments dédiés</td></tr>
+              <tr><td>312</td><td>dicet tv</td><td>172.16.64.0/27</td><td>172.16.65.126</td><td>Segments dédiés</td></tr>
+
+              <tr><td>920</td><td>Exit</td><td>172.16.254.0/28</td><td>172.16.254.14</td><td>Sortie vers Internet</td></tr>
+              <tr><td>2</td><td>Blackhole</td><td>—</td><td>—</td><td>Quarantaine</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <details open>
+            <summary>Étapes – Conception du plan IP</summary>
+            <div class="content">
+              <ol>
+                <li>Inventorier les zones (Mana, Office, Wi‑Fi, DMZ, Startups).</li>
+                <li>Choisir les <strong>plages / masques</strong> et fixer l’<strong>IP SVI</strong> de chaque VLAN.</li>
+                <li>Réserver les IP pour <em>Core, Stormshield (transit), Proxmox bridges, serveurs</em>.</li>
+                <li>Documenter dans un tableau source (CSV/Sheets) et versionner.</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core & Access -->
+    <section id="core" class="card">
+      <h2>Switch Core (L3) & Switches d’accès (L2)</h2>
+      <p>Exemple générique de configuration (Cisco‑like). Adaptez la syntaxe à votre matériel.</p>
+      <details open>
+        <summary>Core – VLAN, SVI, Trunks, ACL de base</summary>
+        <div class="content">
+<pre><button class="copy" data-for="c-core">Copier</button><code id="c-core">! VLANs
+vlan 10 name MANA
+vlan 20 name OFFICE
+vlan 30 name WIFI_GUEST
+vlan 100 name DMZ_PUBLIC
+vlan 200 name DMZ_PRIVATE
+vlan 300 name STARTUPS
+vlan 301 digimedia
+Vlan 302 atema
+vlan 303 hostit
+vlan 304 donicharity
+vlan 305 antiquecafe
+vlan 306 elflyer
+vlan 307 cycle
+vlan 308 finexo
+vlan 309 restaurant
+vlan 310 littlefashion
+vlan 311 onyxdigital
+vlan 312 dicet tv
+vlan 920 name EXIT
+vlan 2 name BLACKHOLE
+!
+! SVI (interfaces virtuelles)
+interface vlan10
+ ip address 172.16.31.254 255.255.224.0
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan20
+ ip address 172.16.63.254 255.255.224.0
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan30
+ ip address 172.16.223.254 255.255.224.0
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan100
+ ip address 172.16.111.254 255.255.240.0
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan200
+ ip address 172.16.127.254 255.255.240.0
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan300
+ ip address 172.16.64.30 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+interface vlan920
+ ip address 172.16.254.14 255.255.255.240
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan301
+ ip address 172.16.64.30  255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan302
+ ip address 172.16.64.62 2255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan303
+ ip address 172.16.64.94 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan304
+ ip address 172.16.64.126 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan305
+ ip address 172.16.64.158 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan306
+ ip address 172.16.64.190 255.255.255.224
+ no shut
+!
+interface vlan307
+ ip address 172.16.64.222 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan308
+ ip address 172.16.64.254 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan309
+ ip address 172.16.65.30 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan310
+ ip address 172.16.65.62 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan311
+ ip address 172.16.65.94 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+interface vlan312
+ ip address 172.16.65.126 255.255.255.224
+ ip helper-address 172.16.127.253
+ no shut
+!
+! Trunks vers Access
+interface gi1/0/24
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,100,200,301,302,303,304,305,306,307,308,309,310,311,312,920
+ spanning-tree portfast trunk
+!
+! Route par défaut vers Stormshield (transit EXIT)
+ip route 0.0.0.0 0.0.0.0 172.16.254.1
+!
+! ACL de base (exemple)
+ip access-list extended FROM_CLIENTS
+ deny   tcp any any eq 23    ! bloque Telnet
+ permit tcp any any eq 80
+ permit tcp any any eq 443
+ permit icmp any any
+ deny   ip any any log
+!
+interface vlan20
+ ip access-group FROM_CLIENTS in</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary>Access – Ports d’accès & trunks</summary>
+        <div class="content">
+<pre><button class="copy" data-for="c-acc">Copier</button><code id="c-acc">! Exemple Switch Access 1
+vlan 10,20,30,100,200,300,920
+!
+interface gi1/0/1
+ switchport mode access
+ switchport access vlan 10     ! Port admin
+ spanning-tree portfast
+!
+interface gi1/0/2
+ switchport mode access
+ switchport access vlan 20     ! Utilisateur
+ spanning-tree portfast
+!
+interface gi1/0/48            ! Uplink vers Core
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,100,200,300,920
+ spanning-tree portfast trunk
+!
+! Sécurité de base
+no ip http server
+line vty 0 4
+ transport input ssh
+ login local</code></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- Stormshield -->
+    <section id="stormshield" class="card">
+      <h2>Pare‑feu Stormshield</h2>
+      <details open>
+        <summary>Checklist – Routage, NAT, filtrage</summary>
+        <div class="content">
+          <ol>
+            <li><strong>Interfaces/zonage</strong> : créer les interfaces pour chaque VLAN (ou transit depuis Core) et affecter les zones (LAN, DMZ, GUEST, WAN).</li>
+            <li><strong>Routes</strong> : route par défaut → WAN, routes statiques si besoin.</li>
+            <li><strong>NAT sortant</strong> : SNAT pour VLAN 20/30/300/DMZ → WAN.</li>
+            <li><strong>Filtrage</strong> : autoriser Clients→Internet (80/443, DNS), Clients→Serveurs (SMB, LDAP), bloquer inverse.</li>
+            <li><strong>Journalisation</strong> et alertes (
+              Monitoring) : activer logs pour règles critiques.</li>
+            <li><strong>VPN</strong> (option) : portail SSL/IPsec pour accès distant.</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <!-- Proxmox -->
+    <section id="proxmox" class="card">
+      <h2>Proxmox VE – Bridges & VLAN</h2>
+      <p>Créer les <em>bridges</em> (vmbr) correspondants et taguer les interfaces des VM.</p>
+      <details open>
+        <summary>Étapes – Réseau Proxmox</summary>
+        <div class="content">
+          <ol>
+            <li>vmbr0 (Mgmt) : IP d’admin en VLAN 10 (Mana) → accès Web/SSH Proxmox.</li>
+            <li>vmbrX (Serveurs) : trunk vers Core/Stormshield, VLAN tag sur chaque VM.</li>
+            <li>Tester la connectivité : ping SVI, accès DNS/DHCP (quand dispo).</li>
+          </ol>
+        </div>
+      </details>
+<details>
+  <summary>Extrait /etc/network/interfaces (exemple Debian)</summary>
+  <div class="content">
+<pre><button class="copy" data-for="c-pve">Copier</button><code id="c-pve">auto lo
+iface lo inet loopback
+
+auto vmbr0
+iface vmbr0 inet static
+  address 172.16.31.10/19
+  gateway 172.16.31.254
+  bridge-ports eno1
+  bridge-stp off
+  bridge-fd 0
+
+# Trunk pour VM (tag VLAN au niveau de la VM)
+auto vmbr1
+iface vmbr1 inet manual
+  bridge-ports eno2
+  bridge-stp off
+  bridge-fd 0</code></pre>
+  </div>
+</details>
+    </section>
+
+    <!-- ADDS + DNS + DHCP -->
+    <section id="adds" class="card">
+      <h2>AD DS 2025 + DNS + DHCP</h2>
+      <div class="grid">
+        <div>
+          <details open>
+            <summary>Procédure – Promote to DC (AD DS)</summary>
+            <div class="content">
+              <ol>
+                <li>Installer Windows Server 2025, configurer IP fixe (VLAN Serveurs).</li>
+                <li>Ajouter rôles : <strong>AD DS</strong> + <strong>DNS</strong> + <strong>DHCP</strong>.</li>
+                <li>Promouvoir en contrôleur de domaine (nouvelle forêt).</li>
+                <li>Créer OU, groupes (ex : IT, Users, Startups) et comptes.</li>
+              </ol>
+            </div>
+          </details>
+          <details>
+            <summary>DHCP – Portées & options</summary>
+            <div class="content">
+              <ul>
+                <li>Créer des <strong>scopes</strong> pour VLAN 20/30/300 : plage, passerelle (SVI), DNS = IP du DC.</li>
+                <li>Réservations pour hôtes critiques (Mac⇄IP).</li>
+                <li>Activer <em>DHCP relay</em> sur Core si serveur DHCP n’est pas dans le même VLAN.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div>
+          <details>
+            <summary>DNS – Zones & enregistrements</summary>
+            <div class="content">
+              <ul>
+                <li>Zone directe (A) + zone inversée (PTR).</li>
+                <li>Enregistrements pour SRV‑FILES, PROXMOX, GLPI, etc.</li>
+                <li>Transfert conditionnel vers DNS externes si besoin.</li>
+              </ul>
+            </div>
+          </details>
+          <details>
+            <summary>PowerShell – Exemples utiles</summary>
+            <div class="content">
+<pre><button class="copy" data-for="c-ps">Copier</button><code id="c-ps"># Installer rôles
+Install-WindowsFeature AD-Domain-Services,DNS -IncludeManagementTools
+
+# Promouvoir rapidement (exemple simplifié)
+Install-ADDSForest -DomainName "stationf.local" -SafeModeAdministratorPassword (Read-Host -AsSecureString)
+
+# Créer OU & groupe\ nNew-ADOrganizationalUnit -Name "Startups" -Path "DC=stationf,DC=local"
+New-ADGroup -Name "DevTeam" -GroupScope Global -Path "OU=Startups,DC=stationf,DC=local"</code></pre>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- GPO -->
+    <section id="gpo" class="card">
+      <h2>GPO – Sécurité & configuration postes</h2>
+      <details open>
+        <summary>Exemples de GPO</summary>
+        <div class="content">
+          <ul>
+            <li>Mot de passe fort (longueur mini, expiration, historique).</li>
+            <li>Désactivation de LM/NTLMv1, durcissement SMB.</li>
+            <li>Déploiement d’imprimantes / partages via préférences.</li>
+            <li>Firewall Windows : règles entrantes/sortantes par profil.</li>
+            <li>Scripts d’ouverture de session (map réseau).</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- File Server -->
+    <section id="files" class="card">
+      <h2>File Server – SMB / NTFS</h2>
+      <details open>
+        <summary>Étapes</summary>
+        <div class="content">
+          <ol>
+            <li>Installer le rôle <strong>File and Storage Services</strong>.</li>
+            <li>Créer les <strong>partages SMB</strong> (ex : <code>\\SRV-FILES\Projets</code>).</li>
+            <li>Définir les <strong>droits NTFS</strong> par groupes AD (Lecture/Écriture).</li>
+            <li>Publier les chemins via GPO (lecteurs mappés).</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <!-- Windows 11 -->
+    <section id="win11" class="card">
+      <h2>Windows 11 – Joindre le domaine</h2>
+      <details open>
+        <summary>Procédure rapide</summary>
+        <div class="content">
+          <ol>
+            <li>Configurer l’IP via DHCP du VLAN 20 (ou fixe avec DNS = DC).</li>
+            <li><em>Paramètres</em> → Système → À propos → <strong>Renommer ce PC (avancé)</strong> → <strong>Domaine</strong> : <code>stationf.local</code>.</li>
+            <li>Redémarrer, connexion avec <code>STATIONF\utilisateur</code>.</li>
+            <li>Vérifier l’application des GPO et l’accès SMB.</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <!-- GLPI -->
+    <section id="glpi" class="card">
+      <h2>GLPI – ITSM</h2>
+      <details open>
+        <summary>Usage conseillé</summary>
+        <div class="content">
+          <ul>
+            <li>Créer catégories : Incidents, Demandes, Changements.</li>
+            <li>Gabarits : ouverture de ticket pour VLAN/ACL/Serveur.</li>
+            <li>Inventaire (agent) sur Windows 11 et serveurs.</li>
+            <li>Tableau de bord pour le suivi des lots 1–3.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- Azure / Wi-Fi -->
+    <section id="azure" class="card">
+      <h2>Wi‑Fi / Azure</h2>
+      <details open>
+        <summary>Principes</summary>
+        <div class="content">
+          <ul>
+            <li>SSID interne relié au <strong>VLAN 30</strong> (Invités) ou segment dédié.</li>
+            <li>WPA2‑Enterprise (si possible) ou PSK fort ; portail invité si souhaité.</li>
+            <li>Isolement client‑client + filtrage Stormshield vers LAN/DMZ.</li>
+            <li>Option Azure AD / Entra pour identité & MDM (Intune).</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- Tests -->
+    <section id="tests" class="card">
+      <h2>Tests & Validation</h2>
+      <details open>
+        <summary>Plan de tests</summary>
+        <div class="content">
+          <table>
+            <thead><tr><th>Test</th><th>But</th><th>Commande / Outil</th></tr></thead>
+            <tbody>
+              <tr><td>Ping inter‑VLAN</td><td>Vérifier routage</td><td><code>ping 172.16.63.10</code>, <code>tracert</code></td></tr>
+              <tr><td>DNS interne</td><td>Résolution noms</td><td><code>nslookup srv-files.stationf.local</code></td></tr>
+              <tr><td>NAT Internet</td><td>Sortie WAN</td><td><code>ping 8.8.8.8</code>, navigateur web</td></tr>
+              <tr><td>ACL</td><td>Restriction flux</td><td><code>nmap</code>, essais SSH/SMB</td></tr>
+              <tr><td>GPO</td><td>Conformité sécu</td><td><code>gpresult /r</code></td></tr>
+              <tr><td>SMB</td><td>Accès fichiers</td><td><code>\\SRV-FILES\Projets</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- Annexes -->
+    <section id="annexes" class="card">
+      <h2>Annexes</h2>
+      <details>
+        <summary>Bonnes pratiques de sécurité
+            <br>
+            <br>
+            <button><a href="../index.html">Retour</a></button>
+        </summary>
+        <br>
+        
+        <div class="content">
+          <ul>
+            <li>MFA pour accès d’administration (Proxmox/AD/Stormshield).</li>
+            <li>Clés SSH, désactiver Telnet, limiter les IP source (VLAN 10).</li>
+            <li>Sauvegardes + tests de restauration planifiés.</li>
+            <li>Inventaire et journalisation centralisés.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <script>
+    // Nav active on scroll
+    const links=[...document.querySelectorAll('#toc a')];
+    const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+    const obs=new IntersectionObserver((io)=>{
+      io.forEach(e=>{
+        if(e.isIntersecting){
+          links.forEach(l=>l.classList.remove('active'));
+          const i=secs.indexOf(e.target); if(i>=0) links[i].classList.add('active');
+        }
+      })
+    },{rootMargin:'-40% 0px -55% 0px', threshold:0});
+    secs.forEach(s=>obs.observe(s));
+
+    // Smooth scroll
+    links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});}));
+
+    // Copy buttons
+    document.querySelectorAll('.copy').forEach(btn=>{
+      btn.addEventListener('click',async()=>{
+        const id=btn.getAttribute('data-for');
+        const el=document.getElementById(id);
+        await navigator.clipboard.writeText(el.innerText);
+        const old=btn.textContent; btn.textContent='Copié ✓'; btn.style.background='#0c2e24';
+        setTimeout(()=>{btn.textContent=old; btn.style.background='#0d203f';},1200);
+      })
+    });
+
+    // Search filter (hide sections not matching)
+    const q=document.getElementById('q');
+    const sections=[...document.querySelectorAll('main section')];
+    q.addEventListener('input',()=>{
+      const v=q.value.trim().toLowerCase();
+      sections.forEach(s=>{
+        const hit=s.innerText.toLowerCase().includes(v);
+        s.style.display = (v && !hit) ? 'none' : '';
+      });
+    });
+  </script>
+</body>
+</html>
